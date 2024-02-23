@@ -7,12 +7,19 @@ import type { NextFunction, Request, Response } from 'express'
  * @param next The next function
  * @returns void
  */
-export function messageVerify (req: Request, res: Response, next: NextFunction): void {
+export function messageLengthCheck (req: Request, res: Response, next: NextFunction): void {
   const message = req.body.message as string ?? ''
+
+  if (message.length === 0) {
+    res.status(400).send({
+      error: 'message is empty'
+    })
+    return
+  }
 
   if (message.length > 4096) {
     res.status(400).send({
-      error: 'Message is too long. Max length is 4096 characters'
+      error: 'message is too long. Max length is 4096 characters'
     })
     return
   }
