@@ -27,7 +27,7 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(basicErrorHandler);
-app.use(`//users`, usersRouter)
+app.use(`/users`, usersRouter)
 app.use(`/groups`, groupsRouter)
 
 const PORT = process.env.PORT || 3000;
