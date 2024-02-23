@@ -1,0 +1,19 @@
+{
+  "name": "whatsapp-group-automation",
+  "version": "1.0.0",
+  "description": "API to automitaclly create whatsapp groups upon request",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boharasirshak/whatsapp-group-automation.git"
+  },
+  "author": "Arnap Chapagain",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/boharasirshak/whatsapp-group-automation/issues"
+  },
+  "homepage": "https://github.com/boharasirshak/whatsapp-group-automation#readme"
+}
