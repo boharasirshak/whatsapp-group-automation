@@ -11,7 +11,7 @@ export function isClientReady (req: Request, res: Response, next: NextFunction):
   if (!globalThis.IS_AUTHENTICATED) {
     res.status(401).send({
       error: {
-        message: 'Client is not authenticated'
+        message: 'client is not authenticated'
       }
     })
     return
@@ -19,7 +19,7 @@ export function isClientReady (req: Request, res: Response, next: NextFunction):
   if (!globalThis.IS_READY) {
     res.status(401).send({
       error: {
-        message: 'Client is not ready'
+        message: 'client is not ready'
       }
     })
     return
