@@ -3,8 +3,13 @@ import * as cors from "cors";
 import express, { Request, Response } from "express";
 import { exit } from "process";
 
+import client from "./client";
+
 import { basicErrorHandler } from "./middlewares/errorMiddlewars";
 import { isClientReady } from "./middlewares/initMiddlewares";
+
+import groupsRouter from "./routes/groupsRouter";
+import usersRouter from "./routes/usersRouter";
 
 const app = express();
 
@@ -22,6 +27,8 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(basicErrorHandler);
+app.use(`//users`, usersRouter)
+app.use(`/groups`, groupsRouter)
 
 const PORT = process.env.PORT || 3000;
 
