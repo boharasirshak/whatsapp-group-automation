@@ -18,3 +18,11 @@ export function formatMessageAck (ack: MessageAck): string {
       return 'Unknown'
   }
 }
+
+export function formatNumber(number: string): string {
+  number = number.replace(/\+/g, '');
+  if (!number.endsWith('@c.us')) {
+    number += '@c.us'
+  }
+  return number
+}
