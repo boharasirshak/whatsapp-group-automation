@@ -9,6 +9,7 @@ import { basicErrorHandler } from "./middlewares/errorMiddlewars";
 import { isClientReady } from "./middlewares/initMiddlewares";
 
 import groupsRouter from "./routes/groupsRouter";
+import messagesRouter from "./routes/messagesRouter";
 import usersRouter from "./routes/usersRouter";
 
 const app = express();
@@ -29,16 +30,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(basicErrorHandler);
 app.use(`/users`, usersRouter)
 app.use(`/groups`, groupsRouter)
+app.use(`/messages`, messagesRouter)
 
 const PORT = process.env.PORT || 3000;
 
 client
   .initialize()
   .then(() => {
-    console.log("Client initialized!");
+    console.log("[info]: client initialized!");
   })
   .catch((err) => {
-    console.error("Error initializing client", err);
+    console.error("[critical] error initializing client!", err);
     exit(1);
   });
 
@@ -55,5 +57,5 @@ app.get("/status", isClientReady, (req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port http://localhost:${PORT}`);
+  console.log(`[info]: server is running on http://localhost:${PORT}`);
 });
