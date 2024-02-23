@@ -1,7 +1,7 @@
 import * as bodyParser from "body-parser";
-import * as cors from "cors";
 import express, { Request, Response } from "express";
 import { exit } from "process";
+const cors = require("cors");
 
 import client from "./client";
 
