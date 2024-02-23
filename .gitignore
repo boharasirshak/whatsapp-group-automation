@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Custom ignores
+dist/
+node_modules/
+session/
+.wwebjs_cache/
