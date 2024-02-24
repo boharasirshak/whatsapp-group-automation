@@ -4,7 +4,9 @@
   "description": "API to automatically create whatsapp groups upon request.",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
