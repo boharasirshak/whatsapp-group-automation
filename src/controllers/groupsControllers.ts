@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { Contact } from "whatsapp-web.js";
+import { MessageMedia, type GroupChat } from "whatsapp-web.js";
 import { formatNumber } from "../utils/formatter";
 
 export async function createAGroup(req: Request, res: Response): Promise<void> {
@@ -9,8 +9,6 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
     (req.body.verify_every_contact as boolean) ?? false;
 
   if (verifyEveryContact) {
-    const contacts: Contact[] = [];
-
     for (let i = 0; i < contactIds.length; i++) {
       const contactId = contactIds[i];
       try {
@@ -54,7 +52,65 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
 }
 
 export async function setGroupProfilePic(req: Request, res: Response): Promise<void> {
+  const image = req.file as Express.Multer.File ?? null;
+  const id = req.body.id as string ?? "";
 
+  if (!image || !id) {
+    res.status(400).send({
+      error: {
+        message: "invalid request. `image` and `id` required.",
+      },
+    });
+    return;
+  }
+
+  if (image.mimetype.split("/")[0] !== "image") {
+    res.status(400).send({
+      error: {
+        message: "invalid file type. must be an image!",
+      },
+    });
+    return;
+  }
+
+  try {
+    const file = MessageMedia.fromFilePath(image.path);
+    file.filename = image.originalname;
+    file.mimetype = image.mimetype;
+
+    const chat = await globalThis.client.getChatById(id);
+    if (!chat.isGroup) {
+      res.status(400).send({
+        error: {
+          message: "chat is not a group!",
+        },
+      });
+      return;
+    }
+
+    const group = chat as GroupChat;
+    const status = await group.setPicture(file);
+    if (!status) {
+      res.status(500).send({
+        error: {
+          message: "failed to set group profile picture",
+        },
+      });
+      return;
+    }
+
+    res.status(200).send({
+      data: {
+        message: "group profile picture set",
+      },
+    });
+  } catch {
+    res.status(500).send({
+      error: {
+        message: "failed to set group profile picture",
+      },
+    });
+  }
 }
 
 export async function setGroupAdmins(req: Request, res: Response): Promise<void> {
