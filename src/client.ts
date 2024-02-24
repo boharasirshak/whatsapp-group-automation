@@ -34,13 +34,13 @@ client.on("qr", (qr) => {
 })
 
 client.on("ready", () => {
-  console.log("[info]: Client is ready!");
+  console.log("[info]: client is ready!");
   globalThis.IS_READY = true;
 })
 
 client.on("authenticated", () => {
   globalThis.IS_AUTHENTICATED = true;
-  console.log("[info]: Client is authenticated!");
+  console.log("[info]: client is authenticated!");
 })
 
 client.on("authentication_failure", () => {
