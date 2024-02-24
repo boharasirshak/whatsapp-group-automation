@@ -114,5 +114,66 @@ export async function setGroupProfilePic(req: Request, res: Response): Promise<v
 }
 
 export async function setGroupAdmins(req: Request, res: Response): Promise<void> {
+  const id = req.body.id as string ?? "";
+  const usersIds = req.body.users as string[] ?? [];
+
+  if (!id || usersIds.length === 0) {
+    res.status(400).send({
+      error: {
+        message: "invalid request. `id` and `users` required.",
+      },
+    });
+    return;
+  }
+
+  try {
+    const chat = await globalThis.client.getChatById(id);
+    const users = [];
+
+    for(const userId of usersIds){
+      users.push(formatNumber(userId));
+    }
   
+    if (users.length === 0) {
+      res.status(400).send({
+        error: {
+          message: "invalid request. `users` must have at least one valid number.",
+        },
+      });
+      return;
+    }
+    if (!chat.isGroup) {
+      res.status(400).send({
+        error: {
+          message: "specified chat id is not a group!",
+        },
+      });
+      return;
+    }
+
+    const group = chat as GroupChat;
+    const result = await group.promoteParticipants(users);
+    if (result.status === 200) {
+      res.status(200).send({
+        data: {
+          message: "admins set",
+        },
+      });
+      return;
+    } else {
+      res.status(500).send({
+        error: {
+          message: "failed to set group admins",
+        },
+      });
+      return;
+    }
+  } catch (e) {
+    res.status(500).send({
+      error: {
+        message: "failed to set group admins or a user might already be admin",
+      },
+    });
+  }
+
 }
