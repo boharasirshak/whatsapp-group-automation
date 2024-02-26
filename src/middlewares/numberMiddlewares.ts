@@ -18,12 +18,12 @@ export function numberFormater (req: Request, res: Response, next: NextFunction)
     return
   }
 
-  number = number.replace(" ", "");
+  number = number.replace(/\s/g, "")
   
   // check if it's a group
   if (number.endsWith("@g.us")) { } 
   else {
-    number = number.replace(/\+/g, '')
+    number = number.replace(/\+/g, "")
     if (!number.endsWith('@c.us')) {
       number += '@c.us'
     }
