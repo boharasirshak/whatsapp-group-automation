@@ -14,8 +14,7 @@ export async function getMe(req: Request, res: Response): Promise<void> {
 }
 
 export async function isRegisteredNumber(req: Request, res: Response): Promise<void> {
-  const query = req.query || req.params || req.body;
-  const number = query.number! as string;
+  const { number } = req.body;
   const client = globalThis.client;
   try {
     const response = await client.isRegisteredUser(number);
