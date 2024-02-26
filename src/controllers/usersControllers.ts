@@ -33,6 +33,7 @@ export async function getFormattedNumber(req: Request, res: Response): Promise<v
     const response = await client.getNumberId(number);
     if (!response) {
       res.status(404).send({ error: { message: "Invalid number" } });
+      return
     }
     res.status(200).send({ data: { number: response?._serialized } });
   } catch {
