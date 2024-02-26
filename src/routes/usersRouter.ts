@@ -7,6 +7,6 @@ const router = Router();
 
 router.get("/me", isClientReady, getMe);
 router.post("/verify", isClientReady, numberFormater, isRegisteredNumber);
-router.get("/format", isClientReady, getFormattedNumber);
+router.post("/format", isClientReady, getFormattedNumber);
 
 export default router;

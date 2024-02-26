@@ -25,12 +25,16 @@ export async function isRegisteredNumber(req: Request, res: Response): Promise<v
 }
 
 export async function getFormattedNumber(req: Request, res: Response): Promise<void> {
-  const query = req.query || req.params || req.body;
-  const number = query.number! as string;
+  const query = req.body || req.query || req.params;
+  let number = query.number! as string;
   const client = globalThis.client;
+  number = number.replace('+', '');
   try {
-    const response = await client.getFormattedNumber(number);
-    res.status(200).send({ data: { number: response } });
+    const response = await client.getNumberId(number);
+    if (!response) {
+      res.status(404).send({ error: { message: "Invalid number" } });
+    }
+    res.status(200).send({ data: { number: response?._serialized } });
   } catch {
     res.status(404).send({ error: { message: "Invalid number" } });
   }
