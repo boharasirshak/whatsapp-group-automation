@@ -10,7 +10,8 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
 
   if (verifyEveryContact) {
     for (let i = 0; i < contactIds.length; i++) {
-      const contactId = contactIds[i];
+      let contactId = contactIds[i];
+      contactId = formatNumber(contactId);
       try {
         await globalThis.client.getContactById(contactId);
       } catch {
@@ -43,9 +44,53 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
       },
     });
   } catch (e) {
+    console.log(e);
     res.status(500).send({
       error: {
         message: "Failed to create group",
+      },
+    });
+  }
+}
+
+export async function addGroupMembers(req: Request, res: Response): Promise<void> {
+  const id = req.body.id as string ?? "";
+  const numbers = req.body.numbers as string[] ?? [];
+  const message: string = req.body.message as string ?? "";
+
+  const chat = await globalThis.client.getChatById(id);
+  if (!chat.isGroup) {
+    res.status(400).send({
+      error: {
+        message: "chat is not a group!",
+      },
+    });
+    return;
+  }
+  const group = chat as GroupChat;
+  try {
+    let result = await group.addParticipants(numbers.map(formatNumber), {
+      comment: message,
+    });
+    if (typeof result === "string") {
+      res.status(200).send({
+        data: {
+          message: result,
+        },
+      });
+      return;
+    }
+    res.status(200).send({
+      data: {
+        ...result,
+      },
+    });
+    
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({
+      error: {
+        message: "failed to add members",
       },
     });
   }
