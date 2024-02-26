@@ -20,7 +20,8 @@ export function formatMessageAck (ack: MessageAck): string {
 }
 
 export function formatNumber(number: string): string {
-  number = number.replace(/\+/g, '');
+  number = number.replace(' ', '');
+  number = number.replace('+', '');
   if (!number.endsWith('@c.us')) {
     number += '@c.us'
   }

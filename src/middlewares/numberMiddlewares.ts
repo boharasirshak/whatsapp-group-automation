@@ -17,6 +17,8 @@ export function numberFormater (req: Request, res: Response, next: NextFunction)
     })
     return
   }
+
+  number = number.replace(" ", "");
   
   // check if it's a group
   if (number.endsWith("@g.us")) { } 
