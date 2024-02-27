@@ -4,8 +4,7 @@
       "name": "whatsapp-group-automation-api",
       "script": "npm",
       "args" : "start",
-      "autorestart" : true,
-      "watch" : true 
+      "autorestart" : true
     }
   ]
 }
