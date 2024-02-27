@@ -15,7 +15,7 @@ declare global {
 
 const client = new Client({
   authStrategy: new LocalAuth({
-    dataPath: "/session"
+    dataPath: "./session"
   }),
   puppeteer: {
 		args: ['--no-sandbox'],
