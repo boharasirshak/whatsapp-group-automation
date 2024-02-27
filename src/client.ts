@@ -1,3 +1,4 @@
+import path from "path";
 import { exit } from "process";
 import qrcode from "qrcode-terminal";
 import { Client, LocalAuth, MessageAck, type Message } from "whatsapp-web.js";
@@ -15,7 +16,7 @@ declare global {
 
 const client = new Client({
   authStrategy: new LocalAuth({
-    dataPath: "./session"
+    dataPath: path.join(__dirname, "../session"),
   }),
   puppeteer: {
 		args: ['--no-sandbox'],
