@@ -2,7 +2,12 @@ import { Router } from 'express';
 import multer from "multer";
 import os from 'os';
 
-import { createAGroup, setGroupAdmins, setGroupProfilePic } from '../controllers/groupsControllers';
+import {
+  addGroupMembers,
+  createAGroup,
+  setGroupAdmins,
+  setGroupProfilePic
+} from '../controllers/groupsControllers';
 import { isClientReady } from "../middlewares/initMiddlewares";
 
 const upload = multer({
@@ -29,6 +34,12 @@ router.put(
   '/admins',
   isClientReady,
   setGroupAdmins
+)
+
+router.put(
+  '/members',
+  isClientReady,
+  addGroupMembers
 )
 
 
