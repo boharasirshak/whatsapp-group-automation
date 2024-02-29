@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { MessageMedia, type GroupChat } from "whatsapp-web.js";
-import { formatNumber } from "../utils/formatter";
+import { formatNumber } from "../lib/formatter";
 
 export async function createAGroup(req: Request, res: Response): Promise<void> {
   const title = (req.body.title as string) ?? "New Group";
@@ -38,6 +38,7 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
       });
       return;
     }
+    
     res.status(201).send({
       data: {
         ...group,

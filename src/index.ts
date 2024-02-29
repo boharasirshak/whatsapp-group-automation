@@ -28,9 +28,9 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(basicErrorHandler);
-app.use(`/users`, usersRouter)
-app.use(`/groups`, groupsRouter)
-app.use(`/messages`, messagesRouter)
+app.use(`/users`, usersRouter);
+app.use(`/groups`, groupsRouter);
+app.use(`/messages`, messagesRouter);
 
 const PORT = process.env.PORT || 3000;
 
@@ -52,7 +52,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/status", isClientReady, (req: Request, res: Response) => {
   res.status(200).send({
-    message: "Client is ready and authenticated",
+    message: "client is ready and authenticated",
   });
 });
 

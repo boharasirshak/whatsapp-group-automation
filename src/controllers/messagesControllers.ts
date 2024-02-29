@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
+import { formatNumber } from "../lib/formatter";
 import { sendContacts, sendMessage } from "../lib/messages";
-import { formatNumber } from "../utils/formatter";
 
 export async function sendTextMesage(
   req: Request,
