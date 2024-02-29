@@ -2,6 +2,8 @@ import path from "path";
 import { exit } from "process";
 import qrcode from "qrcode-terminal";
 import { Client, GroupNotificationTypes, LocalAuth, MessageAck, type Message } from "whatsapp-web.js";
+import JsonDb from "./lib/db";
+import { CreatedGroup } from "./types/groups";
 
 // for simplicity, these will be set to global variables
 // you can, however, import/export these using 
@@ -26,6 +28,8 @@ const client = new Client({
 globalThis.IS_READY = false;
 globalThis.IS_AUTHENTICATED = false;
 globalThis.client = client;
+
+let db = new JsonDb<CreatedGroup>("groups.json");
 
 client.on("message", (message) => {
   // empty
@@ -95,10 +99,15 @@ client.on('group_join', async (notification) => {
     notification.type === GroupNotificationTypes.ADD
   ) {
     const chat = await notification.getChat();
-    console.log(`[info]: ${notification.author} joined group ${chat.name} - ${chat.id._serialized}`);
+    console.log(notification);
+    console.log(`[info]: A new user joined group ${chat.name} - ${chat.id._serialized}`);
+    
+    let group = db.findOne((group) => group.id === chat.id._serialized);
+    if (!group) {
+      return;
+    }
 
-    // check if it is the group that was created by the POST /groups endpoint
-    // if yes, send a welcome message to the user.
+    await notification.reply(`Welcome to the group ${chat.name}`)
   }
 });
 
