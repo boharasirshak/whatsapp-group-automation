@@ -99,13 +99,12 @@ client.on('group_join', async (notification) => {
     notification.type === GroupNotificationTypes.ADD
   ) {
     const chat = await notification.getChat();
-    console.log(notification);
-    console.log(`[info]: A new user joined group ${chat.name} - ${chat.id._serialized}`);
-    
     let group = db.findOne((group) => group.id === chat.id._serialized);
     if (!group) {
       return;
     }
+    console.log(notification);
+    console.log(`[info]: A new user joined group ${chat.name} - ${chat.id._serialized}`);
 
     await notification.reply(`Welcome to the group ${chat.name}`)
   }
