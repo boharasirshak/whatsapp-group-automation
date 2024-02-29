@@ -1,6 +1,10 @@
 import type { Request, Response } from "express";
 import { MessageMedia, type GroupChat } from "whatsapp-web.js";
+import JsonDb from "../lib/db";
 import { formatNumber } from "../lib/formatter";
+import { CreatedGroup } from "../types/groups";
+
+const db = new JsonDb<CreatedGroup>("groups.json");
 
 export async function createAGroup(req: Request, res: Response): Promise<void> {
   const title = (req.body.title as string) ?? "New Group";
@@ -25,12 +29,16 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
     }
   }
   const contacts = [];
-  for(const contactId of contactIds){
+  for (const contactId of contactIds) {
     contacts.push(formatNumber(contactId));
   }
   try {
     const group = await globalThis.client.createGroup(title, contacts);
     if (typeof group === "string") {
+      db.insertOne({
+        title: group,
+        id: group,
+      });
       res.status(201).send({
         data: {
           group,
@@ -38,7 +46,12 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
       });
       return;
     }
-    
+
+    db.insertOne({
+      title: group.title,
+      id: group.gid._serialized,
+    });
+
     res.status(201).send({
       data: {
         ...group,
@@ -54,10 +67,13 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function addGroupMembers(req: Request, res: Response): Promise<void> {
-  const id = req.body.id as string ?? "";
-  const numbers = req.body.numbers as string[] ?? [];
-  const message: string = req.body.message as string ?? "";
+export async function addGroupMembers(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const id = (req.body.id as string) ?? "";
+  const numbers = (req.body.numbers as string[]) ?? [];
+  const message: string = (req.body.message as string) ?? "";
 
   const chat = await globalThis.client.getChatById(id);
   if (!chat.isGroup) {
@@ -86,7 +102,6 @@ export async function addGroupMembers(req: Request, res: Response): Promise<void
         ...result,
       },
     });
-    
   } catch (e) {
     console.log(e);
     res.status(500).send({
@@ -97,9 +112,12 @@ export async function addGroupMembers(req: Request, res: Response): Promise<void
   }
 }
 
-export async function setGroupProfilePic(req: Request, res: Response): Promise<void> {
-  const image = req.file as Express.Multer.File ?? null;
-  const id = req.body.id as string ?? "";
+export async function setGroupProfilePic(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const image = (req.file as Express.Multer.File) ?? null;
+  const id = (req.body.id as string) ?? "";
 
   if (!image || !id) {
     res.status(400).send({
@@ -159,9 +177,12 @@ export async function setGroupProfilePic(req: Request, res: Response): Promise<v
   }
 }
 
-export async function setGroupAdmins(req: Request, res: Response): Promise<void> {
-  const id = req.body.id as string ?? "";
-  const usersIds = req.body.users as string[] ?? [];
+export async function setGroupAdmins(
+  req: Request,
+  res: Response
+): Promise<void> {
+  const id = (req.body.id as string) ?? "";
+  const usersIds = (req.body.users as string[]) ?? [];
 
   if (!id || usersIds.length === 0) {
     res.status(400).send({
@@ -176,14 +197,15 @@ export async function setGroupAdmins(req: Request, res: Response): Promise<void>
     const chat = await globalThis.client.getChatById(id);
     const users = [];
 
-    for(const userId of usersIds){
+    for (const userId of usersIds) {
       users.push(formatNumber(userId));
     }
-  
+
     if (users.length === 0) {
       res.status(400).send({
         error: {
-          message: "invalid request. `users` must have at least one valid number.",
+          message:
+            "invalid request. `users` must have at least one valid number.",
         },
       });
       return;
@@ -221,5 +243,4 @@ export async function setGroupAdmins(req: Request, res: Response): Promise<void>
       },
     });
   }
-
 }
