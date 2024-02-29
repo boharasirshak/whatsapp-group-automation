@@ -134,3 +134,4 @@ dist/
 node_modules/
 session/
 .wwebjs_cache/
+groups.json
