@@ -21,7 +21,11 @@ class JsonDb<T> {
     }
     this._path = path;
     const file = fs.readFileSync(path, "utf-8");
-    this._data = JSON.parse(file);
+    try {
+      this._data = JSON.parse(file);
+    } catch {
+      this._data = JSON.parse("[]");
+    }
     this._autoCommit = autoCommit;
   }
 
