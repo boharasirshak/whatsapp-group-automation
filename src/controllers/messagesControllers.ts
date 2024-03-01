@@ -43,10 +43,22 @@ export async function sendContactMessage(
   
   try {
     for (let i = 0; i < contactIds.length; i++) {
-      let cId = contactIds[i];
-      cId = formatNumber(cId);
-      const contact = await globalThis.client.getContactById(cId);
-      contacts.push(contact);
+      try {
+        let cId = contactIds[i];
+        cId = formatNumber(cId);
+        const contact = await globalThis.client.getContactById(cId);
+        contacts.push(contact);
+      } 
+      catch {}
+    }
+
+    if (contacts.length === 0) {
+      res.status(400).send({
+        error: {
+          message: "invalid request. `contacts` must have at least one valid number."
+        }
+      })
+      return
     }
     const result = await sendContacts({
       client: globalThis.client,
