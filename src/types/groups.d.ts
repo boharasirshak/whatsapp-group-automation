@@ -17,4 +17,13 @@ export type CreatedGroup = {
   date2?: string;
   time?: string;
   props?: string;
+  messageType?: string;
 };
+
+export type GroupNotificationId = {
+  fromMe: boolean;
+  remote: string;
+  id: string;
+  participant: string;
+  _serialized: string;
+}
