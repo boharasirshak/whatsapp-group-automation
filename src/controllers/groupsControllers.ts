@@ -99,7 +99,7 @@ export async function addGroupMembers(
   numbers = numbers.map(formatNumber);
   numbers = numbers.filter(
     (number) => number !== globalThis.client.info.wid._serialized
-  );
+    );
   const message: string = (req.body.message as string) ?? "";
   let chat: Chat;
 
@@ -135,7 +135,7 @@ export async function addGroupMembers(
 
   const group = chat as GroupChat;
   try {
-    let result = await group.addParticipants(numbers.map(formatNumber), {
+    let result = await group.addParticipants(numbers, {
       comment: message,
     });
     if (typeof result === "string") {
@@ -231,8 +231,10 @@ export async function setGroupAdmins(
 ): Promise<void> {
   const id = (req.body.id as string) ?? "";
   const usersIds = (req.body.users as string[]) ?? [];
+  let users = usersIds.map(formatNumber);
+  users = users.filter((user) => user !== globalThis.client.info.wid._serialized);
 
-  if (!id || usersIds.length === 0) {
+  if (id === null || id === undefined || usersIds.length === 0) {
     res.status(400).send({
       error: {
         message: "invalid request. `id` and `users` required.",
@@ -243,11 +245,6 @@ export async function setGroupAdmins(
 
   try {
     const chat = await globalThis.client.getChatById(id);
-    const users = [];
-
-    for (const userId of usersIds) {
-      users.push(formatNumber(userId));
-    }
 
     if (users.length === 0) {
       res.status(400).send({

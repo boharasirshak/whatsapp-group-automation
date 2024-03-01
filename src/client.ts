@@ -98,7 +98,7 @@ client.on('group_join', async (notification) => {
   // currently we are only interested in invite and add notifications
   if (
     notification.type === GroupNotificationTypes.INVITE || 
-    notification.type === GroupNotificationTypes.ADD
+    notification.type === GroupNotificationTypes.ADD 
   ) {
     const chat = await notification.getChat();
     let group = db.findOne((group) => group.id === chat.id._serialized);
