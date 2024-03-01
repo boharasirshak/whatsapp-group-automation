@@ -3,7 +3,9 @@ import { exit } from "process";
 import qrcode from "qrcode-terminal";
 import { Client, GroupNotificationTypes, LocalAuth, MessageAck, type Message } from "whatsapp-web.js";
 import JsonDb from "./lib/db";
-import { CreatedGroup } from "./types/groups";
+import { formatNumber } from "./lib/formatter";
+import { WelcomeMessageType, formatWelcomeMessage } from "./lib/welcomeMessages";
+import { CreatedGroup, GroupNotificationId } from "./types/groups";
 
 // for simplicity, these will be set to global variables
 // you can, however, import/export these using 
@@ -103,10 +105,47 @@ client.on('group_join', async (notification) => {
     if (!group) {
       return;
     }
-    console.log(notification);
-    console.log(`[info]: A new user joined group ${chat.name} - ${chat.id._serialized}`);
+    const id = notification.id as GroupNotificationId;
+    console.log(`[info]: A new user ${id.participant} joined group ${chat.name}`);
 
-    await notification.reply(`Welcome to the group ${chat.name}`)
+    // logic to check if the user is the customer that filled the form
+    // db.findOne((group) => {
+    //   group.customers?.forEach((customer) => {
+    //     let cusId = formatNumber(customer.phone);
+    //     if (cusId === id.participant) {
+    //       return true;
+    //     }
+    //   });
+    //   return false;
+    // });
+
+    var customer = group.customers?.find((customer) => {
+      let cusId = formatNumber(customer.phone);
+      return cusId === id.participant;
+    });
+
+    let type: WelcomeMessageType;
+
+    if (group.messageType === "E-Com Einzelprojekt") {
+      type = WelcomeMessageType.First;
+    } else if (group.messageType === "E-Com Content Abo") {
+      type = WelcomeMessageType.Second;
+    } else if (group.messageType === "E-Com Rundumbetreuung") {
+      type = WelcomeMessageType.Third;
+    } else {
+      type = WelcomeMessageType.Fourth;
+    }
+
+    var message = formatWelcomeMessage(
+      type,
+      group,
+      customer ?? {
+        name: "",
+        phone: ""
+      },
+    );
+
+    await notification.reply(message);
   }
 });
 
