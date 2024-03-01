@@ -2,20 +2,35 @@ import type { Request, Response } from "express";
 import { MessageMedia, type GroupChat } from "whatsapp-web.js";
 import JsonDb from "../lib/db";
 import { formatNumber } from "../lib/formatter";
-import { CreatedGroup } from "../types/groups";
+import { CreatedCustomer, CreatedGroup } from "../types/groups";
 
 const db = new JsonDb<CreatedGroup>("groups.json");
 
 export async function createAGroup(req: Request, res: Response): Promise<void> {
   const title = (req.body.title as string) ?? "New Group";
-  const contactIds = (req.body.contacts as string[]) ?? [];
+  let contactIds = (req.body.contacts as string[]) ?? [];
+  contactIds = contactIds.map(formatNumber);
+
+  // do not add own number to the group (it is added by default when creating a group)
+  contactIds = contactIds.filter(contact => contact !== globalThis.client.info.wid._serialized);
+
   const verifyEveryContact =
     (req.body.verify_every_contact as boolean) ?? false;
+
+  let customers: CreatedCustomer[] = req.body.customers ?? [];
+  const customerType = req.body.customer_type ?? "";
+  const brandName = req.body.brand_name ?? "";
+  const link1 = req.body.link1 ?? "";
+  const link2 = req.body.link2 ?? "";
+  const date1 = req.body.date1 ?? "";
+  const date2 = req.body.date2 ?? "";
+  const time = req.body.time ?? "";
+  const props = req.body.props ?? "";
+
 
   if (verifyEveryContact) {
     for (let i = 0; i < contactIds.length; i++) {
       let contactId = contactIds[i];
-      contactId = formatNumber(contactId);
       try {
         await globalThis.client.getContactById(contactId);
       } catch {
@@ -28,16 +43,12 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
       }
     }
   }
-  const contacts = [];
-  for (const contactId of contactIds) {
-    contacts.push(formatNumber(contactId));
-  }
   try {
-    const group = await globalThis.client.createGroup(title, contacts);
+    const group = await globalThis.client.createGroup(title, contactIds);
     if (typeof group === "string") {
       db.insertOne({
-        title: group,
         id: group,
+        title: group,
       });
       res.status(201).send({
         data: {
@@ -50,6 +61,15 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
     db.insertOne({
       title: group.title,
       id: group.gid._serialized,
+      brandName,
+      customerType,
+      date1,
+      date2,
+      link1,
+      link2,
+      time,
+      props,
+      customers
     });
 
     res.status(201).send({
