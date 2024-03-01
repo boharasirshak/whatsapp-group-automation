@@ -18,7 +18,8 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
 
   const verifyEveryContact =
     (req.body.verify_every_contact as boolean) ?? false;
-
+  
+  let messageType = req.body.message_type ?? "Keine Nachricht";
   let customers: CreatedCustomer[] = req.body.customers ?? [];
   const customerType = req.body.customer_type ?? "";
   const brandName = req.body.brand_name ?? "";
@@ -71,6 +72,7 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
       time,
       props,
       customers,
+      messageType
     });
 
     res.status(201).send({
