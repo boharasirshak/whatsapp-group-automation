@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { MessageMedia, type GroupChat } from "whatsapp-web.js";
+import { Chat, MessageMedia, type GroupChat } from "whatsapp-web.js";
 import JsonDb from "../lib/db";
 import { formatNumber } from "../lib/formatter";
 import { CreatedCustomer, CreatedGroup } from "../types/groups";
@@ -12,7 +12,9 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
   contactIds = contactIds.map(formatNumber);
 
   // do not add own number to the group (it is added by default when creating a group)
-  contactIds = contactIds.filter(contact => contact !== globalThis.client.info.wid._serialized);
+  contactIds = contactIds.filter(
+    (contact) => contact !== globalThis.client.info.wid._serialized
+  );
 
   const verifyEveryContact =
     (req.body.verify_every_contact as boolean) ?? false;
@@ -26,7 +28,6 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
   const date2 = req.body.date2 ?? "";
   const time = req.body.time ?? "";
   const props = req.body.props ?? "";
-
 
   if (verifyEveryContact) {
     for (let i = 0; i < contactIds.length; i++) {
@@ -69,7 +70,7 @@ export async function createAGroup(req: Request, res: Response): Promise<void> {
       link2,
       time,
       props,
-      customers
+      customers,
     });
 
     res.status(201).send({
@@ -92,18 +93,44 @@ export async function addGroupMembers(
   res: Response
 ): Promise<void> {
   const id = (req.body.id as string) ?? "";
-  const numbers = (req.body.numbers as string[]) ?? [];
+  let numbers = (req.body.numbers as string[]) ?? [];
+  numbers = numbers.map(formatNumber);
+  numbers = numbers.filter(
+    (number) => number !== globalThis.client.info.wid._serialized
+  );
   const message: string = (req.body.message as string) ?? "";
+  let chat: Chat;
 
-  const chat = await globalThis.client.getChatById(id);
-  if (!chat.isGroup) {
-    res.status(400).send({
-      error: {
-        message: "chat is not a group!",
+  // when no numbers other than the admin's number is provided
+  // return OK, cause the main number is already in the group
+  if (numbers.length === 0) {
+    res.status(200).send({
+      data: {
+        message: "OK",
       },
     });
     return;
   }
+
+  try {
+    chat = await globalThis.client.getChatById(id);
+    if (!chat.isGroup) {
+      res.status(400).send({
+        error: {
+          message: "chat is not a group!",
+        },
+      });
+      return;
+    }
+  } catch {
+    res.status(400).send({
+      error: {
+        message: "invalid `id`",
+      },
+    });
+    return;
+  }
+
   const group = chat as GroupChat;
   try {
     let result = await group.addParticipants(numbers.map(formatNumber), {
@@ -123,7 +150,6 @@ export async function addGroupMembers(
       },
     });
   } catch (e) {
-    console.log(e);
     res.status(500).send({
       error: {
         message: "failed to add members",
