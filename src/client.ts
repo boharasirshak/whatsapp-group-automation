@@ -31,7 +31,7 @@ globalThis.IS_READY = false;
 globalThis.IS_AUTHENTICATED = false;
 globalThis.client = client;
 
-let db = new JsonDb<CreatedGroup>("groups.json");
+export const db = new JsonDb<CreatedGroup>("groups.json");
 
 client.on("message", (message) => {
   // empty
