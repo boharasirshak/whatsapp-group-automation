@@ -6,7 +6,7 @@ import * as fs from "fs";
  * @type T The type of the data to store in the database
  */
 class JsonDb<T> {
-  private _data: T[];
+  private _data: T[] = [];
   private readonly _path: string;
   private _autoCommit: boolean;
 
@@ -20,13 +20,17 @@ class JsonDb<T> {
       fs.writeFileSync(path, JSON.stringify([]));
     }
     this._path = path;
-    const file = fs.readFileSync(path, "utf-8");
+    this.updateData();
+    this._autoCommit = autoCommit;
+  }
+
+  private updateData(): void {
+    const file = fs.readFileSync(this._path, "utf-8");
     try {
       this._data = JSON.parse(file);
     } catch {
       this._data = JSON.parse("[]");
     }
-    this._autoCommit = autoCommit;
   }
 
   /**
@@ -91,6 +95,7 @@ class JsonDb<T> {
    */
   public commit(): void {
     fs.writeFileSync(this._path, JSON.stringify(this._data, null, 2));
+    this.updateData();
   }
 }
 
