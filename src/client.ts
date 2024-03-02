@@ -1,7 +1,7 @@
 import path from "path";
 import { exit } from "process";
 import qrcode from "qrcode-terminal";
-import { Client, GroupNotificationTypes, LocalAuth, MessageAck, type Message } from "whatsapp-web.js";
+import { Client, LocalAuth, MessageAck, type Message } from "whatsapp-web.js";
 import JsonDb from "./lib/db";
 import { formatNumber } from "./lib/formatter";
 import { WelcomeMessageType, formatWelcomeMessage } from "./lib/welcomeMessages";
@@ -23,8 +23,8 @@ const client = new Client({
     dataPath: path.join(__dirname, "../session"),
   }),
   puppeteer: {
-		args: ['--no-sandbox'],
-	},
+    args: ['--no-sandbox'],
+  },
 });
 
 globalThis.IS_READY = false;
@@ -67,19 +67,19 @@ client.on("message_ack", (message: Message, ack: MessageAck) => {
   //   case MessageAck.ACK_ERROR:
   //     console.log(`[debug]: message ${messageId} sent to ${sentTo} failed to send`);
   //     break;
-    
+
   //   case MessageAck.ACK_PENDING:
   //     console.log(`[debug]: message ${messageId} sent to ${sentTo} is pending to be seen`);
   //     break;
-  
+
   //   case MessageAck.ACK_SERVER:
   //     console.log(`[debug]: message ${messageId} sent to ${sentTo} was sent by the server`);
   //     break;
-    
+
   //   case MessageAck.ACK_DEVICE:
   //     console.log(`[debug]: message ${messageId} sent to ${sentTo} was received on the device`);
   //     break;
-    
+
   //   case MessageAck.ACK_READ:
   //     console.log(`[debug]: message ${messageId} sent to ${sentTo} was read by the recipient`);
   //     break;
@@ -95,58 +95,52 @@ client.on("message_ack", (message: Message, ack: MessageAck) => {
 });
 
 client.on('group_join', async (notification) => {
-  // currently we are only interested in invite and add notifications
-  if (
-    notification.type === GroupNotificationTypes.INVITE || 
-    notification.type === GroupNotificationTypes.ADD 
-  ) {
-    const chat = await notification.getChat();
-    let group = db.findOne((group) => group.id === chat.id._serialized);
-    if (!group) {
-      return;
-    }
-    const id = notification.id as GroupNotificationId;
-    console.log(`[info]: A new user ${id.participant} joined group ${chat.name}`);
-
-    // logic to check if the user is the customer that filled the form
-    // db.findOne((group) => {
-    //   group.customers?.forEach((customer) => {
-    //     let cusId = formatNumber(customer.phone);
-    //     if (cusId === id.participant) {
-    //       return true;
-    //     }
-    //   });
-    //   return false;
-    // });
-
-    var customer = group.customers?.find((customer) => {
-      let cusId = formatNumber(customer.phone);
-      return cusId === id.participant;
-    });
-
-    let type: WelcomeMessageType;
-
-    if (group.messageType === "E-Com Einzelprojekt") {
-      type = WelcomeMessageType.First;
-    } else if (group.messageType === "E-Com Content Abo") {
-      type = WelcomeMessageType.Second;
-    } else if (group.messageType === "E-Com Rundumbetreuung") {
-      type = WelcomeMessageType.Third;
-    } else {
-      type = WelcomeMessageType.Fourth;
-    }
-
-    var message = formatWelcomeMessage(
-      type,
-      group,
-      customer ?? {
-        name: "",
-        phone: ""
-      },
-    );
-
-    await notification.reply(message);
+  const chat = await notification.getChat();
+  let group = db.findOne((group) => group.id === chat.id._serialized);
+  if (!group) {
+    return;
   }
+  const id = notification.id as GroupNotificationId;
+  console.log(`[info]: A new user ${id.participant} joined group ${chat.name}`);
+
+  // logic to check if the user is the customer that filled the form
+  // db.findOne((group) => {
+  //   group.customers?.forEach((customer) => {
+  //     let cusId = formatNumber(customer.phone);
+  //     if (cusId === id.participant) {
+  //       return true;
+  //     }
+  //   });
+  //   return false;
+  // });
+
+  var customer = group.customers?.find((customer) => {
+    let cusId = formatNumber(customer.phone);
+    return cusId === id.participant;
+  });
+
+  let type: WelcomeMessageType;
+
+  if (group.messageType === "E-Com Einzelprojekt") {
+    type = WelcomeMessageType.First;
+  } else if (group.messageType === "E-Com Content Abo") {
+    type = WelcomeMessageType.Second;
+  } else if (group.messageType === "E-Com Rundumbetreuung") {
+    type = WelcomeMessageType.Third;
+  } else {
+    type = WelcomeMessageType.Fourth;
+  }
+
+  var message = formatWelcomeMessage(
+    type,
+    group,
+    customer ?? {
+      name: "",
+      phone: ""
+    },
+  );
+
+  await notification.reply(message);
 });
 
 export default client;
