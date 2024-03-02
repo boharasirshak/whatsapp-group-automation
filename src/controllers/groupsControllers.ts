@@ -1,10 +1,8 @@
 import type { Request, Response } from "express";
 import { Chat, MessageMedia, type GroupChat } from "whatsapp-web.js";
-import JsonDb from "../lib/db";
+import { db } from "../client";
 import { formatNumber } from "../lib/formatter";
-import { CreatedCustomer, CreatedGroup } from "../types/groups";
-
-const db = new JsonDb<CreatedGroup>("groups.json");
+import { CreatedCustomer } from "../types/groups";
 
 export async function createAGroup(req: Request, res: Response): Promise<void> {
   const title = (req.body.title as string) ?? "New Group";
