@@ -1,7 +1,7 @@
 import path from "path";
 import { exit } from "process";
 import qrcode from "qrcode-terminal";
-import { Client, LocalAuth, MessageAck, type Message } from "whatsapp-web.js";
+import { Client, GroupNotificationTypes, LocalAuth, MessageAck, type Message } from "whatsapp-web.js";
 import JsonDb from "./lib/db";
 import { formatNumber } from "./lib/formatter";
 import { WelcomeMessageType, formatWelcomeMessage } from "./lib/welcomeMessages";
@@ -95,6 +95,13 @@ client.on("message_ack", (message: Message, ack: MessageAck) => {
 });
 
 client.on('group_join', async (notification) => {
+
+  // TODO: check the diffrent notification types./
+
+  if (notification.type === GroupNotificationTypes.ADD)
+    return;
+
+  // only handle the event if the user is invited and joins the group
   const chat = await notification.getChat();
   let group = db.findOne((group) => group.id === chat.id._serialized);
   if (!group) {
@@ -104,15 +111,19 @@ client.on('group_join', async (notification) => {
   console.log(`[info]: A new user ${id.participant} joined group ${chat.name}`);
 
   // logic to check if the user is the customer that filled the form
-  // db.findOne((group) => {
-  //   group.customers?.forEach((customer) => {
-  //     let cusId = formatNumber(customer.phone);
-  //     if (cusId === id.participant) {
-  //       return true;
-  //     }
-  //   });
-  //   return false;
-  // });
+  let exists = db.findOne((group) => {
+    group.customers?.forEach((customer) => {
+      let cusId = formatNumber(customer.phone);
+      if (cusId === id.participant) {
+        return true;
+      }
+    });
+    return false;
+  });
+
+  if (!exists) {
+    return;
+  }
 
   var customer = group.customers?.find((customer) => {
     let cusId = formatNumber(customer.phone);
