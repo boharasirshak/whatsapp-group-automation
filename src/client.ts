@@ -95,9 +95,6 @@ client.on("message_ack", (message: Message, ack: MessageAck) => {
 });
 
 client.on('group_join', async (notification) => {
-
-  // TODO: check the diffrent notification types./
-
   if (notification.type === GroupNotificationTypes.ADD)
     return;
 
@@ -111,13 +108,20 @@ client.on('group_join', async (notification) => {
   console.log(`[info]: A new user ${id.participant} joined group ${chat.name}`);
 
   // logic to check if the user is the customer that filled the form
-  let exists = db.findOne((group) => {
-    group.customers?.forEach((customer) => {
+  let exists = db.findOne((dbGroup) => {
+    if (dbGroup.id !== chat.id._serialized) {
+      return false;
+    }
+    if (!dbGroup.customers) { 
+      return false;
+    }
+    for (let idx = 0; idx < dbGroup.customers.length; idx++) {
+      const customer = dbGroup.customers[idx];
       let cusId = formatNumber(customer.phone);
       if (cusId === id.participant) {
         return true;
-      }
-    });
+      } 
+    }
     return false;
   });
 
