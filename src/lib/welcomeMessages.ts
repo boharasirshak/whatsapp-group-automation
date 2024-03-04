@@ -31,19 +31,19 @@ export function formatWelcomeMessage(
 export const welcomeMessages = {
   "E-Com Einzelprojekt": `Hi {name}, willkommen in deiner persönlichen WhatsApp Gruppe.
 
- *Anleitungsvideo - Whatsapp auf PC oder Mac verwenden:* whatsapp.filmlagune.de
+*Anleitungsvideo - Whatsapp auf PC oder Mac verwenden:* whatsapp.filmlagune.de
   
-  WhatsApp ist unser zentraler Kommunikationskanal. Bitte schicke uns *keine Infos oder Fragen per E-Mail.*
+WhatsApp ist unser zentraler Kommunikationskanal. Bitte schicke uns *keine Infos oder Fragen per E-Mail.*
   
- *Hier kommt nochmal die Übersicht zu den nächsten Schritten:*
+*Hier kommt nochmal die Übersicht zu den nächsten Schritten:*
   
- *Schritt 1 - Die Tabelle mit den Produktinfos ausfüllen:*
-  Trage dort bitte alle relevanten Infos ein, auch wenn sie bereits in einem Meeting angesprochen wurden. Bitte fülle die Tabelle direkt online aus. Sie wird automatisch gespeichert, du brauchst sie also nicht herunterzuladen oder manuell zu speichern.
+*Schritt 1 - Die Tabelle mit den Produktinfos ausfüllen:*
+Trage dort bitte alle relevanten Infos ein, auch wenn sie bereits in einem Meeting angesprochen wurden. Bitte fülle die Tabelle direkt online aus. Sie wird automatisch gespeichert, du brauchst sie also nicht herunterzuladen oder manuell zu speichern.
   
- *Tabelle öffnen:* {link1}
+*Tabelle öffnen:* {link1}
   
- *Schritt 2 - Grafiken hochladen:*
-  Wir benötigen folgende Dateien (falls vorhanden) von dir:
+*Schritt 2 - Grafiken hochladen:*
+Wir benötigen folgende Dateien (falls vorhanden) von dir:
   • Logos 
   • Grafiken
   • freigestellte Fotos der Produkte im Format: png oder psd (wenn möglich mit transparentem Hintergrund)
@@ -51,42 +51,42 @@ export const welcomeMessages = {
   • Design Guide / festgelegte Farbtöne etc.
   • Trust Grafiken (wie z.B. Award Logos & Zertifikate)
   
- *Bitte hier hochladen:* {link2}
+*Bitte hier hochladen:* {link2}
   
- *Schritt 3 - Produkte & Requisiten versenden:*
+*Schritt 3 - Produkte & Requisiten versenden:*
   
-  Schicke uns bitte folgende Requisiten zu: {props}
+Schicke uns bitte folgende Requisiten zu: {props}
   
-  Empfangsadresse: 
-  Filmlagune GmbH, Konsul-Smidt-Straße 8C, 28217 Bremen
+Empfangsadresse: 
+Filmlagune GmbH, Konsul-Smidt-Straße 8C, 28217 Bremen
   
- *Wichtige Infos für den Versand:*
+*Wichtige Infos für den Versand:*
   - Schicke uns bitte, nachdem du die Produkte verschickt hast, die Trackingnummer hier in die Gruppe.
   - Versende das Paket (wenn möglich) bitte so, dass es nur zu Werktagen zugestellt wird.
   - Bitte sende uns, wenn möglich den Lieferschein und die Anzahl der einzelnen Pakete hier in die Gruppe, damit wir sicherstellen können, dass alles angekommen ist.
   - Schicke uns bitte die Rücksendelabels direkt mit zu (wenn möglich am besten digital hier in die Gruppe).
   
- *Timeline:*
-  Schritt 1-3 erledigen bis: {date1}
-  Konzeptions-Meeting: {date2} um {time}
+*Timeline:*
+Schritt 1-3 erledigen bis: {date1}
+Konzeptions-Meeting: {date2} um {time}
   
- *Bei Fragen:* Einfach alles hier in die WhatsApp Gruppe, egal zu was :)`,
+*Bei Fragen:* Einfach alles hier in die WhatsApp Gruppe, egal zu was :)`,
 
   "E-Com Content Abo": `Hi {name}, willkommen in deiner persönlichen WhatsApp Gruppe.
 
- *Anleitungsvideo - Whatsapp auf PC oder Mac verwenden:* whatsapp.filmlagune.de
+*Anleitungsvideo - Whatsapp auf PC oder Mac verwenden:* whatsapp.filmlagune.de
   
-  WhatsApp ist unser zentraler Kommunikationskanal. Bitte schicke uns *keine Infos oder Fragen per E-Mail.*
+WhatsApp ist unser zentraler Kommunikationskanal. Bitte schicke uns *keine Infos oder Fragen per E-Mail.*
   
- *Hier kommt nochmal die Übersicht zu den nächsten Schritten:*
+*Hier kommt nochmal die Übersicht zu den nächsten Schritten:*
   
- *Schritt 1 - Die Tabelle mit den Produktinfos ausfüllen:*
-  Trage dort bitte alle relevanten Infos ein, auch wenn sie bereits in einem Meeting angesprochen wurden. Bitte fülle die Tabelle direkt online aus. Sie wird automatisch gespeichert, du brauchst sie also nicht herunterzuladen oder manuell zu speichern.
+*Schritt 1 - Die Tabelle mit den Produktinfos ausfüllen:*
+Trage dort bitte alle relevanten Infos ein, auch wenn sie bereits in einem Meeting angesprochen wurden. Bitte fülle die Tabelle direkt online aus. Sie wird automatisch gespeichert, du brauchst sie also nicht herunterzuladen oder manuell zu speichern.
   
- *Tabelle öffnen:* {link1}
+*Tabelle öffnen:* {link1}
   
- *Schritt 2 - Grafiken hochladen:*
-  Wir benötigen folgende Dateien (falls vorhanden) von dir:
+*Schritt 2 - Grafiken hochladen:*
+Wir benötigen folgende Dateien (falls vorhanden) von dir:
   • Logos 
   • Grafiken
   • freigestellte Fotos der Produkte im Format: png oder psd (wenn möglich mit transparentem Hintergrund)
@@ -94,69 +94,67 @@ export const welcomeMessages = {
   • Design Guide / festgelegte Farbtöne etc.
   • Trust Grafiken (wie z.B. Award Logos & Zertifikate)
   
- *Bitte hier hochladen:* {link2}
+*Bitte hier hochladen:* {link2}
   
- *Schritt 3 - Produkte & Requisiten versenden:*
+*Schritt 3 - Produkte & Requisiten versenden:*
   
-  Schicke uns bitte folgende Requisiten zu: {props}
+Schicke uns bitte folgende Requisiten zu: {props}
   
-  Empfangsadresse: 
-  Filmlagune GmbH, Konsul-Smidt-Straße 8C, 28217 Bremen
+Empfangsadresse: Filmlagune GmbH, Konsul-Smidt-Straße 8C, 28217 Bremen
   
- *Wichtige Infos für den Versand:*
+*Wichtige Infos für den Versand:*
   - Schicke uns bitte, nachdem du die Produkte verschickt hast, die Trackingnummer hier in die Gruppe.
   - Versende das Paket (wenn möglich) bitte so, dass es nur zu Werktagen zugestellt wird.
   - Bitte sende uns, wenn möglich den Lieferschein und die Anzahl der einzelnen Pakete hier in die Gruppe, damit wir sicherstellen können, dass alles angekommen ist.
   - Schicke uns bitte die Rücksendelabels direkt mit zu (wenn möglich am besten digital hier in die Gruppe).
   
- *Timeline:*
-  Schritt 1-3 erledigen bis: {date1}
-  Konzeptions-Meeting: {date2} um {time}
+*Timeline:*
+Schritt 1-3 erledigen bis: {date1}
+Konzeptions-Meeting: {date2} um {time}
   
- *Bei Fragen:* Einfach alles hier in die WhatsApp Gruppe, egal zu was :)`,
+*Bei Fragen:* Einfach alles hier in die WhatsApp Gruppe, egal zu was :)`,
 
   "E-Com Rundumbetreuung": `Hi {name}, willkommen in deiner persönlichen WhatsApp Gruppe.
 
- *Anleitungsvideo - Whatsapp auf PC oder Mac verwenden:* whatsapp.filmlagune.de
-  
-  WhatsApp ist unser zentraler Kommunikationskanal. Bitte schicke uns *keine Infos oder Fragen per E-Mail.*
-  
- *Hier kommt nochmal die Übersicht zu den nächsten Schritten:*
-  
- *Schritt 1 - Die Tabelle mit den Produktinfos ausfüllen:*
-  Trage dort bitte alle relevanten Infos ein, auch wenn sie bereits in einem Meeting angesprochen wurden. Bitte fülle die Tabelle direkt online aus. Sie wird automatisch gespeichert, du brauchst sie also nicht herunterzuladen oder manuell zu speichern.
-  
- *Tabelle öffnen:* {link1}
-  
- *Schritt 2 - Grafiken hochladen:*
-  Wir benötigen folgende Dateien (falls vorhanden) von dir:
-  • Logos 
-  • Grafiken
-  • freigestellte Fotos der Produkte im Format: png oder psd (wenn möglich mit transparentem Hintergrund)
-  • Schriftarten
-  • Design Guide / festgelegte Farbtöne etc.
-  • Trust Grafiken (wie z.B. Award Logos & Zertifikate)
-  
- *Bitte hier hochladen:* {link2}
-  
- *Schritt 3 - Produkte & Requisiten versenden:*
-  
-  Schicke uns bitte folgende Requisiten zu: {props}
-  
-  Empfangsadresse: 
-  Filmlagune GmbH, Konsul-Smidt-Straße 8C, 28217 Bremen
-  
- *Wichtige Infos für den Versand:*
-  - Schicke uns bitte, nachdem du die Produkte verschickt hast, die Trackingnummer hier in die Gruppe.
-  - Versende das Paket (wenn möglich) bitte so, dass es nur zu Werktagen zugestellt wird.
-  - Bitte sende uns, wenn möglich den Lieferschein und die Anzahl der einzelnen Pakete hier in die Gruppe, damit wir sicherstellen können, dass alles angekommen ist.
-  - Schicke uns bitte die Rücksendelabels direkt mit zu (wenn möglich am besten digital hier in die Gruppe).
-  
- *Timeline:*
-  Schritt 1-3 erledigen bis: {date1}
-  Konzeptions-Meeting: {date2} um {time}
-  
- *Bei Fragen:* Einfach alles hier in die WhatsApp Gruppe, egal zu was :)`,
+*Anleitungsvideo - Whatsapp auf PC oder Mac verwenden:* whatsapp.filmlagune.de
+ 
+WhatsApp ist unser zentraler Kommunikationskanal. Bitte schicke uns *keine Infos oder Fragen per E-Mail.*
+ 
+*Hier kommt nochmal die Übersicht zu den nächsten Schritten:*
+ 
+*Schritt 1 - Die Tabelle mit den Produktinfos ausfüllen:*
+Trage dort bitte alle relevanten Infos ein, auch wenn sie bereits in einem Meeting angesprochen wurden. Bitte fülle die Tabelle direkt online aus. Sie wird automatisch gespeichert, du brauchst sie also nicht herunterzuladen oder manuell zu speichern.
+ 
+*Tabelle öffnen:* {link1}
+ 
+*Schritt 2 - Grafiken hochladen:*
+Wir benötigen folgende Dateien (falls vorhanden) von dir:
+ • Logos 
+ • Grafiken
+ • freigestellte Fotos der Produkte im Format: png oder psd (wenn möglich mit transparentem Hintergrund)
+ • Schriftarten
+ • Design Guide / festgelegte Farbtöne etc.
+ • Trust Grafiken (wie z.B. Award Logos & Zertifikate)
+ 
+*Bitte hier hochladen:* {link2}
+ 
+*Schritt 3 - Produkte & Requisiten versenden:*
+ 
+Schicke uns bitte folgende Requisiten zu: {props}
+ 
+Empfangsadresse: Filmlagune GmbH, Konsul-Smidt-Straße 8C, 28217 Bremen
+ 
+*Wichtige Infos für den Versand:*
+ - Schicke uns bitte, nachdem du die Produkte verschickt hast, die Trackingnummer hier in die Gruppe.
+ - Versende das Paket (wenn möglich) bitte so, dass es nur zu Werktagen zugestellt wird.
+ - Bitte sende uns, wenn möglich den Lieferschein und die Anzahl der einzelnen Pakete hier in die Gruppe, damit wir sicherstellen können, dass alles angekommen ist.
+ - Schicke uns bitte die Rücksendelabels direkt mit zu (wenn möglich am besten digital hier in die Gruppe).
+ 
+*Timeline:*
+Schritt 1-3 erledigen bis: {date1}
+Konzeptions-Meeting: {date2} um {time}
+ 
+*Bei Fragen:* Einfach alles hier in die WhatsApp Gruppe, egal zu was :)`,
 
   "Keine Nachricht": ``,
 };
