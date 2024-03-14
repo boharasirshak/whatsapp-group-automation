@@ -102,6 +102,7 @@ client.on('group_join', async (notification) => {
   const chat = await notification.getChat();
   let group = db.findOne((group) => group.id === chat.id._serialized);
   if (!group) {
+    console.log(`[info]: Group ${chat.name} is not in the database`);
     return;
   }
   const id = notification.id as GroupNotificationId;
@@ -126,6 +127,7 @@ client.on('group_join', async (notification) => {
   });
 
   if (!exists) {
+    console.log(`[info]: User ${id.participant} (${id._serialized}) is not a customer of group ${chat.name}`);
     return;
   }
 
@@ -133,6 +135,7 @@ client.on('group_join', async (notification) => {
     let cusId = formatNumber(customer.phone);
     return cusId === id.participant;
   });
+  console.log(`[info]: Customer ${customer?.name} (${customer?.phone}) is a customer of group ${chat.name}`);
 
   let type: WelcomeMessageType;
 
@@ -145,6 +148,8 @@ client.on('group_join', async (notification) => {
   } else {
     type = WelcomeMessageType.Fourth;
   }
+
+  console.log(`[info]: Sending welcome message ${type} to ${customer?.name} (${customer?.phone}) in group ${chat.name}`);
 
   var message = formatWelcomeMessage(
     type,
