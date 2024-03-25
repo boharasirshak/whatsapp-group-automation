@@ -5,7 +5,18 @@ import { Client, GroupNotificationTypes, LocalAuth, MessageAck, type Message } f
 import JsonDb from "./lib/db";
 import { formatNumber } from "./lib/formatter";
 import { WelcomeMessageType, formatWelcomeMessage } from "./lib/welcomeMessages";
-import { CreatedGroup, GroupNotificationId } from "./types/groups";
+import { CreatedCustomer, CreatedGroup, GroupNotificationId } from "./types/groups";
+
+const DEFAULT_CONTACTS = [
+  // "+49 151 40320796",
+  // "+49 176 73757069",
+  // "+49 162 7289021",
+  // "+49 173 3653715",
+  // "+49 174 2796681",
+  // "+49 152 34628125",
+  "+977 976 2260487",
+  "+977 981 0059586"
+];
 
 // for simplicity, these will be set to global variables
 // you can, however, import/export these using 
@@ -95,46 +106,52 @@ client.on("message_ack", (message: Message, ack: MessageAck) => {
 });
 
 client.on('group_join', async (notification) => {
-  if (notification.type === GroupNotificationTypes.ADD)
+  // only handle join notifications which are not invites
+  if (notification.type === GroupNotificationTypes.INVITE) {
     return;
+  }
 
-  // only handle the event if the user is invited and joins the group
+  // NotificationType ADD is generated when we send a invite request to a user
   const chat = await notification.getChat();
   let group = db.findOne((group) => group.id === chat.id._serialized);
   if (!group) {
     console.log(`[info]: Group ${chat.name} is not in the database`);
     return;
   }
+  if (group.customers === undefined || group.customers.length === 0) {
+    console.log(`[info]: Group ${chat.name} has no customers`);
+    return;
+  }
+
   const id = notification.id as GroupNotificationId;
   console.log(`[info]: A new user ${id.participant} joined group ${chat.name}`);
 
-  // logic to check if the user is the customer that filled the form
-  let exists = db.findOne((dbGroup) => {
-    if (dbGroup.id !== chat.id._serialized) {
-      return false;
-    }
-    if (!dbGroup.customers) { 
-      return false;
-    }
-    for (let idx = 0; idx < dbGroup.customers.length; idx++) {
-      const customer = dbGroup.customers[idx];
-      let cusId = formatNumber(customer.phone);
-      if (cusId === id.participant) {
-        return true;
-      } 
-    }
-    return false;
-  });
+  let customer: CreatedCustomer | undefined;
 
-  if (!exists) {
+  // logic to check if the user is the customer that filled the form
+  for (const element in group.customers) {
+    if (Object.prototype.hasOwnProperty.call(group.customers, element)) {
+      const cusId = formatNumber(group.customers[element].phone);
+      if (cusId === id._serialized || cusId === id.participant) {
+        customer = group.customers[element];
+        break;
+      }
+    }
+  }
+
+  // backup logic to check if the user is the customer that filled the form, just in case
+  group.customers.forEach((cus) => {
+    const cusId = formatNumber(cus.phone);
+    if (cusId === id._serialized || cusId === id.participant) {
+      customer = cus;
+    }
+  })
+
+  if (!customer) {
     console.log(`[info]: User ${id.participant} (${id._serialized}) is not a customer of group ${chat.name}`);
     return;
   }
 
-  var customer = group.customers?.find((customer) => {
-    let cusId = formatNumber(customer.phone);
-    return cusId === id.participant;
-  });
   console.log(`[info]: Customer ${customer?.name} (${customer?.phone}) is a customer of group ${chat.name}`);
 
   let type: WelcomeMessageType;
@@ -160,7 +177,16 @@ client.on('group_join', async (notification) => {
     },
   );
 
-  await notification.reply(message);
+  await chat.sendMessage(message);
+
+  for (const number of DEFAULT_CONTACTS) {
+    try {
+      let contactId = formatNumber(number);
+      await client.sendMessage(contactId, `Bitte begrüße unseren neuen Kunden ${customer.name ?? ""} in der WhatsApp Gruppe *FL | ${group.brandName} | ${group.customerType}*`);
+    } catch (error) {
+      console.log(`[error]: Failed to send message to default contact ${number} as ${error}`);
+    }
+  }
 });
 
 export default client;
