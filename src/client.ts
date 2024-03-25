@@ -8,14 +8,14 @@ import { WelcomeMessageType, formatWelcomeMessage } from "./lib/welcomeMessages"
 import { CreatedCustomer, CreatedGroup, GroupNotificationId } from "./types/groups";
 
 const DEFAULT_CONTACTS = [
-  // "+49 151 40320796",
-  // "+49 176 73757069",
-  // "+49 162 7289021",
-  // "+49 173 3653715",
-  // "+49 174 2796681",
-  // "+49 152 34628125",
-  "+977 976 2260487",
-  "+977 981 0059586"
+  "+49 151 40320796",
+  "+49 176 73757069",
+  "+49 162 7289021",
+  "+49 173 3653715",
+  "+49 174 2796681",
+  "+49 152 34628125",
+  // "+977 976 2260487",
+  // "+977 981 0059586"
 ];
 
 // for simplicity, these will be set to global variables
